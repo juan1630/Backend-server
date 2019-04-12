@@ -7,14 +7,20 @@ var middlewareAutenticacion = require('../middlewares/autenticacion');
 
 var app = express();
 
-// ==========================
-// Obtener todos los uaurios
-// ==========================
+// ==============================
+//    Obtener todos los uaurios
+// ==============================
 
-app.get('/', (req, resm, next) => {
+app.get('/', (req, res, next) => {
     // busca solament los campos email, nombre, img y role
-    Usuario.find({}, 'nombre email img role').exec(
-        (error, usuarios) => {
+    // skip salta el numero de los registros
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+
+    Usuario.find({}, 'nombre email img role')
+        .skip(desde)
+        .limit(5)
+        .exec((error, usuarios) => {
             if (error) {
                 return res.status(500).json({
                     ok: false,
@@ -22,11 +28,16 @@ app.get('/', (req, resm, next) => {
                     errors: error
                 });
             }
-            res.status(200).json({
-                ok: true,
-                usuarios: usuarios
-            });
-            // status 200 todo salio bien
+
+            Usuario.count({}, (error, conteo) => {
+                res.status(200).json({
+                    ok: true,
+                    usuarios,
+                    total: conteo
+                });
+                // status 200 todo salio bien
+            })
+
         });
 
 })
@@ -42,7 +53,7 @@ app.get('/', (req, resm, next) => {
 // Actualizar usuario
 // ==========================
 
-app.put('/:id', middlewareAutenticacion.verificaToken , (req, res) => {
+app.put('/:id', middlewareAutenticacion.verificaToken, (req, res) => {
     var id = req.params.id;
     var body = req.body;
 
@@ -94,7 +105,7 @@ app.put('/:id', middlewareAutenticacion.verificaToken , (req, res) => {
 // Crear un nuevo usuario
 // ==========================
 
-app.post('/', middlewareAutenticacion.verificaToken ,(req, res) => {
+app.post('/', middlewareAutenticacion.verificaToken, (req, res) => {
     var body = req.body;
 
     var usuario = new Usuario({
@@ -129,10 +140,10 @@ app.post('/', middlewareAutenticacion.verificaToken ,(req, res) => {
 
 
 // ==========================
-// eliminar un usuario
+//  eliminar un usuario
 // ==========================
 
-app.delete('/:id',  middlewareAutenticacion.verificaToken ,(req, res) => {
+app.delete('/:id', middlewareAutenticacion.verificaToken, (req, res) => {
     var id = req.params.id;
 
     Usuario.findByIdAndRemove(id, (error, usuarioBorrado) => {

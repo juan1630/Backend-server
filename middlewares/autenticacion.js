@@ -1,5 +1,4 @@
 var jwt = require('jsonwebtoken');
-
 var SEED = require('../config/config').SEED;
 
 // ==========================
@@ -9,8 +8,8 @@ var SEED = require('../config/config').SEED;
 // ==========================
 
 
-exports.verificaToken = function (req, res, next ) {
-        var token = req.query.token;
+exports.verificaToken = function(req, res, next) {
+    var token = req.query.token;
     // recibe el token por la url
     jwt.verify(token, SEED, (error, decoded) => {
         if (error) {
@@ -21,8 +20,8 @@ exports.verificaToken = function (req, res, next ) {
             });
         }
         req.usuario = decoded.usuario;
-         // esta informacion va  a estar disponible en cualquier lugar en el req
-         next();
+        // esta informacion va  a estar disponible en cualquier lugar en el req
+        next();
     });
-    
+
 }

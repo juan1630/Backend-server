@@ -15,7 +15,12 @@ app.use(bodyParser.json());
 // importatr rutas 
 
 var appRoutes = require('./routes/app');
+var hospitalesRoutes = require('./routes/hospitales');
+var medicosRoutes = require('./routes/medico');
 var usuarioRoutes = require('./routes/usuario');
+var busquedaRoutes = require('./routes/busqueda');
+var uploadsRoues = require('./routes/uploads');
+var imagenesRoutes = require('./routes/imagenes');
 var loginRoutes = require('./routes/login');
 
 
@@ -27,10 +32,21 @@ mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (error, resp
     console.log('Base de datos en 27017: \x1b[32m%s\x1b[0m', 'online');
 });
 
-// rutas
+// server index config
+// rutas estaticas
 
+// var serveIndex = require('serve-index');
+// app.use(express.static(__dirname + '/'))
+// app.use('/uploads', serveIndex(__dirname + '/uploads'));
+
+// rutas
 app.use('/usuario', usuarioRoutes);
+app.use('/hospital', hospitalesRoutes);
+app.use('/medico', medicosRoutes);
 app.use('/login', loginRoutes);
+app.use('/busqueda', busquedaRoutes);
+app.use('/upload', uploadsRoues);
+app.use('/img', imagenesRoutes);
 app.use('/', appRoutes);
 
 
