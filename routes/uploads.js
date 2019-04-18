@@ -140,7 +140,7 @@ function subirPorTipo(tipo, id, nombreArchico, res) {
                 return res.status(200).json({
                     ok: true,
                     mensaje: 'Imagen actualizada',
-                    nombre: userUp
+                    user: userUp
                 });
             });
 

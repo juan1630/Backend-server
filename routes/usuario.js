@@ -105,7 +105,7 @@ app.put('/:id', middlewareAutenticacion.verificaToken, (req, res) => {
 // Crear un nuevo usuario
 // ==========================
 
-app.post('/', middlewareAutenticacion.verificaToken, (req, res) => {
+app.post('/', (req, res) => {
     var body = req.body;
 
     var usuario = new Usuario({
@@ -131,7 +131,7 @@ app.post('/', middlewareAutenticacion.verificaToken, (req, res) => {
             ok: true,
             usuario,
             usuarioToken: req.usuario
-        })
+        });
 
 
     });

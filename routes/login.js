@@ -7,7 +7,7 @@ const client = new OAuth2Client(CLIENT_ID);
 
 var express = require('express');
 var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken')
+var jwt = require('jsonwebtoken');
 
 var app = express();
 var Usuario = require('../models/usuario');
@@ -97,7 +97,6 @@ async function verify(token) {
     };
 
 }
-verify().catch(console.error);
 
 
 
@@ -145,11 +144,11 @@ app.post('/google', async(req, res) => {
                 });
             }
 
-            return res.status(200).json({
-                ok: false,
-                mensaje: 'Error al buscar usuario',
-                errors: error
-            });
+            //  return res.status(500).json({
+            //      ok: false,
+            //      mensaje: 'Error al buscar usuario',
+            //      errors: error
+            //  });
         } else {
             // el usuario no existe crearlo
 
