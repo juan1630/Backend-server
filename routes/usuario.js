@@ -17,7 +17,7 @@ app.get('/', (req, res, next) => {
     var desde = req.query.desde || 0;
     desde = Number(desde);
 
-    Usuario.find({}, 'nombre email img role')
+    Usuario.find({}, 'nombre email img role google')
         .skip(desde)
         .limit(5)
         .exec((error, usuarios) => {
@@ -29,7 +29,7 @@ app.get('/', (req, res, next) => {
                 });
             }
 
-            Usuario.count({}, (error, conteo) => {
+            Usuario.countDocuments({}, (error, conteo) => {
                 res.status(200).json({
                     ok: true,
                     usuarios,

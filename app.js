@@ -32,10 +32,12 @@ var uploadsRoues = require('./routes/uploads');
 var imagenesRoutes = require('./routes/imagenes');
 var loginRoutes = require('./routes/login');
 
-
 // Conexion a la base de datos
 
-mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (error, response) => {
+mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', {
+    useCreateIndex: true,
+    useNewUrlParser: true
+}, (error, response) => {
     if (error) throw error;
 
     console.log('Base de datos en 27017: \x1b[32m%s\x1b[0m', 'online');
