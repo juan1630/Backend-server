@@ -45,10 +45,11 @@ app.get('/coleccion/:tabla/:busqueda', (req, res) => {
         data => {
             return res.status(200).json({
                 ok: true,
-                [tabla]: data
+                user: data
+                    // [tabla]: data
             });
         }
-    )
+    );
 
 });
 

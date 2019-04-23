@@ -28,9 +28,19 @@ app.get('/', (req, res, next) => {
             }
 
             Hospitales.count({}, (error, conteo) => {
+
+
+                if (error) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'Consulta mal hecha',
+                        error
+                    });
+                }
+
                 return res.status(200).json({
                     ok: true,
-                    message: 'hospital creado',
+                    message: 'hospital encontrado',
                     user,
                     total: conteo
                 }); // json
@@ -50,6 +60,49 @@ app.get('/', (req, res, next) => {
 // post
 ///////////////////////////////////////
 
+app.get('/:id', (req, res) => {
+    let id = req.params.id;
+
+    Hospitales.findById(id)
+        .populate('usuario', 'nombre img email')
+        .exec((error, hospitalDB) => {
+            if (error) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'algo pasó',
+                    error
+                });
+            }
+            if (!hospitalDB) {
+                return res.status(500).json({
+                    ok: false,
+                    massage: ` Hospital con el ID: ${id} no se encotró`,
+                    error
+                });
+            }
+            if (hospitalDB) {
+                return res.status(200).json({
+                    ok: true,
+                    message: 'hospitales encontardos',
+                    user: hospitalDB
+                });
+            }
+        });
+});
+
+
+//////////////////////////////////////
+// peticion get 
+// ver todos los hospitales
+///////////////////////////////////////
+
+
+
+
+//////////////////////////////////////
+// peticion get 
+// ver hospital por ID
+///////////////////////////////////////
 
 app.post('/', middlewareToken.verificaToken, (req, res) => {
 
@@ -73,7 +126,7 @@ app.post('/', middlewareToken.verificaToken, (req, res) => {
             return res.status(200).json({
                 ok: true,
                 message: 'User created',
-                userCreated
+                user: userCreated
             });
         }
     });
@@ -115,7 +168,7 @@ app.delete('/:id', middlewareToken.verificaToken, (req, res) => {
             return res.status(200).json({
                 ok: true,
                 message: 'user was created',
-                userDeleted
+                user: userDeleted
             });
         }
     });
@@ -173,7 +226,7 @@ app.put('/:id', middlewareToken.verificaToken, (req, res) => {
                 return res.status(200).json({
                     ok: true,
                     message: 'Usuaurio actualizado',
-                    userSaved
+                    user: userSaved
                 });
             }
 
