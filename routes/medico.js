@@ -53,6 +53,57 @@ app.get('/', (req, res) => {
 ///////////////////////////////////////
 
 
+
+///////////////////////////////////////
+//  peticion get 
+// ver un medico
+///////////////////////////////////////
+
+
+app.get('/:id', (req, res) => {
+    let id = req.params.id;
+
+    Medicos.findById(id)
+        .populate('usuario', 'nombre email img')
+        .populate('hospital')
+        .exec((error, medicoDB) => {
+            if (error) {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'algo ocurrio',
+                    error
+                });
+            }
+
+            if (!medicoDB) {
+                return res.status(400).json({
+                    ok: false,
+                    message: "Medico no encotrado",
+                    errors: {
+                        message: 'no existe medico'
+                    }
+                })
+            }
+
+
+            return res.status(200).json({
+                ok: true,
+                mansaje: "Medico encontardo",
+                medicoDB: medicoDB
+            });
+        });
+
+
+});
+
+///////////////////////////////////////
+// Termina la peticion get 
+// ver un medico
+///////////////////////////////////////
+
+
+
+
 ///////////////////////////////////////
 //  peticion post 
 // ver todos los medicos

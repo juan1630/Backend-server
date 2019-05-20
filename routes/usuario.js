@@ -114,7 +114,7 @@ app.post('/', (req, res) => {
         password: bcrypt.hashSync(body.password),
         img: body.img,
         role: body.role
-    })
+    });
 
 
 
