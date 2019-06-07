@@ -25,3 +25,50 @@ exports.verificaToken = function(req, res, next) {
     });
 
 }
+
+
+// ==========================
+// Verificar Admin
+// ver si se el usuario es admin o no
+// modificar a los demas usuarios 
+// ==========================
+
+
+exports.verificaADMIN_ROLE = function(req, res, next) {
+    var usuario = req.usuario;
+
+    if (usuario.role === 'ADMIN_ROLE') {
+        next();
+    } else {
+        return res.status(401).json({
+            ok: false,
+            mensaje: 'Token incorrecto - no es administrador',
+            errors: error
+        });
+    }
+
+}
+
+
+// ==========================
+// Verificar Admin
+// ver si se el usuario es admin o no
+// modificar a los demas usuarios 
+// ==========================
+
+
+exports.verificaADMIN_o_Mismo_Usuario = function(req, res, next) {
+    var usuario = req.usuario;
+    var id = req.params.id;
+
+
+    if (usuario.role === 'ADMIN_ROLE' || usuario._id === id) {
+        next();
+    } else {
+        return res.status(401).json({
+            ok: false,
+            mensaje: 'Token incorrecto - no es administrador Ni es el mismo usuario',
+            errors: error
+        });
+    }
+}
